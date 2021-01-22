@@ -1,23 +1,36 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import { mechanics, themes } from './db';
+
+function selectRandomly(array) {
+  return array[Math.floor(Math.random() * array.length)]
+}
 
 function App() {
+  const [selectedMechanics, setSelectedMechanics] = useState([selectRandomly(mechanics), selectRandomly(mechanics)])
+  const [theme, setTheme] = useState(selectRandomly(themes))
+
+  function refresh() {
+    setSelectedMechanics([selectRandomly(mechanics), selectRandomly(mechanics)])
+    setTheme(selectRandomly(themes))
+  }
+
+  function refreshFirstMechanic() {
+    setSelectedMechanics([selectRandomly(mechanics), selectedMechanics[1]])
+  }
+
+  function refreshSecondMechanic() {
+    setSelectedMechanics([selectedMechanics[0], selectRandomly(mechanics)])
+  }
+
+  function refreshTheme() {
+    setTheme(selectRandomly(themes))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <p>Un jeu de <span className="mechanic" onClick={refreshFirstMechanic}>{selectedMechanics[0]}</span> et de <span className="mechanic" onClick={refreshSecondMechanic}>{selectedMechanics[1]}</span> dans une ambiance <span className="theme" onClick={refreshTheme}>{theme}</span></p>
+      <button onClick={refresh}>Next</button>
     </div>
   );
 }
